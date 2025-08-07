@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="application\Application.cpp" />
+    <ClCompile Include="application\main.cpp" />
     <ClCompile Include="ImGui\imgui-SFML.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
@@ -140,10 +142,10 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\Grid.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Recursive_backtracker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="application\Application.hpp" />
     <ClInclude Include="ImGui\imconfig-SFML.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui-SFML.h" />
@@ -153,9 +155,9 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
-    <ClInclude Include="include\Cell.h" />
-    <ClInclude Include="include\Grid.h" />
-    <ClInclude Include="include\Recursive_backtracker.h" />
+    <ClInclude Include="include\Cell.hpp" />
+    <ClInclude Include="include\Grid.hpp" />
+    <ClInclude Include="include\Recursive_backtracker.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

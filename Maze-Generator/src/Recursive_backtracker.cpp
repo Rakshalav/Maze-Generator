@@ -1,4 +1,4 @@
-#include "../include/Recursive_backtracker.h"
+#include "../include/Recursive_backtracker.hpp"
 
 MazeGenerator::MazeGenerator(Grid& grid_) : grid(&grid_)
 {
@@ -30,9 +30,6 @@ void MazeGenerator::generateMaze()
 	auto& startingCell = (*gridPtr)[0][0];
 	auto staringPos = startingCell.getPosition();
 	Stack.push(staringPos);
-
-	startingCell.setMazeParent({ -1, -1 });
-	startingCell.setMazeTracker(Tracker::Visited);
 	visited[staringPos.x][staringPos.y] = true;
 
 	position dirs[4] = {
@@ -113,4 +110,12 @@ void MazeGenerator::generateMaze()
 		}
 		else Stack.pop();
 	}
+}
+
+MazeGenerator::~MazeGenerator()
+{
+	while (!Stack.empty())
+		Stack.pop();
+
+	
 }

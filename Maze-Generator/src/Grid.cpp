@@ -1,6 +1,6 @@
-#include "../include/Grid.h"
+#include "../include/Grid.hpp"
 
-Grid::Grid(sf::RenderWindow& win) : window(&win)
+Grid::Grid()
 {
 	grid = new cells;
 
@@ -14,11 +14,11 @@ Grid::Grid(sf::RenderWindow& win) : window(&win)
 	}
 }
 
-void Grid::draw()
+void Grid::draw(sf::RenderWindow& window)
 {
 	for (auto& col : *grid) {
 		for (auto& cell : col) {
-			cell.draw(*window);
+			cell.draw(window);
 		}
 	}
 }

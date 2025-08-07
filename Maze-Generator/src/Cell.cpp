@@ -1,4 +1,4 @@
-#include "../include/Cell.h"
+#include "../include/Cell.hpp"
 
 //--------------------(Sub-Cell)--------------------
 SubCell::SubCell() 
@@ -10,7 +10,6 @@ SubCell::SubCell()
 //--------------------(Cell)--------------------
 Cell::Cell()
 {
-	{
 		for (int x = 0; x < cellSize; x++) {
 			for (int y = 0; y < cellSize; y++) {
 				position cellpos = { x, y };
@@ -28,11 +27,6 @@ Cell::Cell()
 
 		subcell_4.type = Wall; subcell_8.type = Wall; subcell_12.type = Wall;
 		subcell_13.type = Wall; subcell_14.type = Wall; subcell_15.type = Wall; subcell_16.type = Wall;
-	}
-	
-	this->isStart = false;
-	this->Mtracker = Tracker::None;
-	this->Mparent = { -1, -1 };
 }
 
 

@@ -1,10 +1,9 @@
 #pragma once
 
 #include <stack>
-#include "Grid.h"
+#include "Grid.hpp"
 #include <random>
 #include <ranges>
-#include <thread>
 
 class MazeGenerator
 {
@@ -21,6 +20,7 @@ private:
 
 public:
 	MazeGenerator(Grid& grid_);
+	~MazeGenerator();
 
 	void generateMaze();
 };
