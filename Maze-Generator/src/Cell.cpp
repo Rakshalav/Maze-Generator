@@ -27,6 +27,8 @@ Cell::Cell()
 
 		subcell_4.type = Wall; subcell_8.type = Wall; subcell_12.type = Wall;
 		subcell_13.type = Wall; subcell_14.type = Wall; subcell_15.type = Wall; subcell_16.type = Wall;
+
+		mParent = { -1, -1 };
 }
 
 

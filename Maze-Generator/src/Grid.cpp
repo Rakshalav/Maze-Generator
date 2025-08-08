@@ -1,8 +1,10 @@
 #include "../include/Grid.hpp"
 
+cells* Grid::grid = nullptr;
+
 Grid::Grid()
 {
-	grid = new cells;
+	Grid::grid = new cells;
 
 	for (int x = 0; x < COL; x++) {
 		for (int y = 0; y < ROW; y++) {

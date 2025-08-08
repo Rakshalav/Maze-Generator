@@ -4,23 +4,29 @@
 #include "Grid.hpp"
 #include <random>
 #include <ranges>
+#include <thread>
+#include <chrono>
 
 class MazeGenerator
 {
 private:
-	Grid* grid;
-	bool mazeDone = false;
 
 	cells* gridPtr = nullptr;
+	bool mazeDone = false;
+	bool generationStarted = false;
 	std::stack<position> Stack;
 	bool visited[COL][ROW];
 
 	bool isValid(position gridpos);
 	position random(std::vector<position> validDirs);
 
+	position previousTop = position(-1, -1);
+
+
 public:
-	MazeGenerator(Grid& grid_);
+	MazeGenerator();
 	~MazeGenerator();
 
-	void generateMaze();
+	void init();
+	void update();
 };

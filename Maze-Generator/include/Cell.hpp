@@ -25,6 +25,7 @@ private:
 	position Position;
 	std::array<std::array<SubCell, cellSize>, cellSize> cell;
 
+	position mParent;
 
 public:
 	Cell();
@@ -37,10 +38,12 @@ public:
 	// setters
 	void setPosition(position gridpos) { Position = gridpos; }
 	void setScreenPos(position gridPos);
+	void setMazeParent(position gridPos) { mParent = gridPos; }
 
 
 	//getters
 	position getPosition() { return Position; }
 	std::array<std::array<SubCell, cellSize>, cellSize>& getSubcells() { return cell; }
+	position getMazeParent() { return mParent; }
 };
 

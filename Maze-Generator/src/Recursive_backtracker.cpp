@@ -1,8 +1,10 @@
 #include "../include/Recursive_backtracker.hpp"
 
-MazeGenerator::MazeGenerator(Grid& grid_) : grid(&grid_)
+using namespace std::chrono_literals;
+
+MazeGenerator::MazeGenerator()
 {
-	gridPtr = grid->getGrid();
+	gridPtr = Grid::grid;
 	memset(visited, false, sizeof(visited));
 }
 
@@ -24,98 +26,117 @@ position MazeGenerator::random(std::vector<position> validDirs)
 	return validDirs[i];
 }
 
-
-void MazeGenerator::generateMaze()
+void MazeGenerator::init()
 {
 	auto& startingCell = (*gridPtr)[0][0];
 	auto staringPos = startingCell.getPosition();
 	Stack.push(staringPos);
 	visited[staringPos.x][staringPos.y] = true;
 
-	position dirs[4] = {
-		{0, -1},  // North
-		{1, 0},   // East
-		{0, 1},   // South
-		{-1, 0}   // West
-	};
-
-	while (!Stack.empty())
-	{
-
-		auto current = Stack.top();
-		visited[current.x][current.y] = true;
-
-		std::vector<position> validDirs;
-
-		//check north neighbor
-		auto neighborNorth = current + dirs[0];
-		if (isValid(neighborNorth) && !visited[neighborNorth.x][neighborNorth.y])
-			validDirs.push_back(neighborNorth);
-
-		//check east neighbor
-		auto neighborEast = current + dirs[1];
-		if (isValid(neighborEast) && !visited[neighborEast.x][neighborEast.y])
-			validDirs.push_back(neighborEast);
-
-		//check South neighbor
-		auto neighborSouth = current + dirs[2];
-		if (isValid(neighborSouth) && !visited[neighborSouth.x][neighborSouth.y])
-			validDirs.push_back(neighborSouth);
-
-		//check West neighbor
-		auto neighborWest = current + dirs[3];
-		if (isValid(neighborWest) && !visited[neighborWest.x][neighborWest.y])
-			validDirs.push_back(neighborWest);
-
-		if (!validDirs.empty()) {
-			auto next = random(validDirs);
-			visited[next.x][next.y] = true;
-			Stack.push(next);
-
-			auto& cellCurrent = (*gridPtr)[current.x][current.y];
-			auto& cellNext = (*gridPtr)[next.x][next.y];
-			auto dir = next - current;
-
-			auto& currentArray = cellCurrent.getSubcells();
-			auto& nextArray = cellNext.getSubcells();
-
-			// North
-			if (dir == dirs[0]) {
-				nextArray[0][3].type = Path;
-				nextArray[1][3].type = Path;
-				nextArray[2][3].type = Path;
-				cellNext.changeColor();
-			}
-			// East
-			else if (dir == dirs[1]) {
-				currentArray[3][0].type = Path;
-				currentArray[3][1].type = Path;
-				currentArray[3][2].type = Path;
-				cellCurrent.changeColor();
-			}
-			// South
-			else if (dir == dirs[2]) {
-				currentArray[0][3].type = Path;
-				currentArray[1][3].type = Path;
-				currentArray[2][3].type = Path;
-				cellCurrent.changeColor();
-			}
-			// West
-			else if (dir == dirs[3]) {
-				nextArray[3][0].type = Path;
-				nextArray[3][1].type = Path;
-				nextArray[3][2].type = Path;
-				cellNext.changeColor();
-			}
-		}
-		else Stack.pop();
-	}
+	generationStarted = true;
 }
+
+void MazeGenerator::update()
+{
+    if (!generationStarted || Stack.empty()) {
+        mazeDone = true;
+        return;
+    }
+
+    if (previousTop != position(-1, -1)) {
+        auto& prevCell = (*gridPtr)[previousTop.x][previousTop.y];
+        auto& prevSubCells = prevCell.getSubcells();
+
+        prevSubCells[0][0].setFillColor(sf::Color::White); prevSubCells[1][0].setFillColor(sf::Color::White); prevSubCells[2][0].setFillColor(sf::Color::White);
+        prevSubCells[0][1].setFillColor(sf::Color::White); prevSubCells[1][1].setFillColor(sf::Color::White); prevSubCells[2][1].setFillColor(sf::Color::White);
+        prevSubCells[0][2].setFillColor(sf::Color::White); prevSubCells[1][2].setFillColor(sf::Color::White); prevSubCells[2][2].setFillColor(sf::Color::White);
+    }
+
+    position dirs[4] = {
+        {0, -1},  // North
+        {1, 0},   // East
+        {0, 1},   // South
+        {-1, 0}   // West
+    };
+
+    auto current = Stack.top();
+    visited[current.x][current.y] = true;
+
+    // Mark current top cell green
+    auto& topCell = (*gridPtr)[current.x][current.y];
+    auto& topSubCell = topCell.getSubcells();
+
+    topSubCell[0][0].setFillColor(sf::Color::Green); topSubCell[1][0].setFillColor(sf::Color::Green); topSubCell[2][0].setFillColor(sf::Color::Green);
+    topSubCell[0][1].setFillColor(sf::Color::Green); topSubCell[1][1].setFillColor(sf::Color::Green); topSubCell[2][1].setFillColor(sf::Color::Green);
+    topSubCell[0][2].setFillColor(sf::Color::Green); topSubCell[1][2].setFillColor(sf::Color::Green); topSubCell[2][2].setFillColor(sf::Color::Green);
+
+    previousTop = current; 
+
+    std::vector<position> validDirs;
+
+    // Check each direction
+    auto neighborNorth = current + dirs[0];
+    if (isValid(neighborNorth) && !visited[neighborNorth.x][neighborNorth.y])
+        validDirs.push_back(neighborNorth);
+
+    auto neighborEast = current + dirs[1];
+    if (isValid(neighborEast) && !visited[neighborEast.x][neighborEast.y])
+        validDirs.push_back(neighborEast);
+
+    auto neighborSouth = current + dirs[2];
+    if (isValid(neighborSouth) && !visited[neighborSouth.x][neighborSouth.y])
+        validDirs.push_back(neighborSouth);
+
+    auto neighborWest = current + dirs[3];
+    if (isValid(neighborWest) && !visited[neighborWest.x][neighborWest.y])
+        validDirs.push_back(neighborWest);
+
+    if (!validDirs.empty()) {
+        auto next = random(validDirs);
+        visited[next.x][next.y] = true;
+        Stack.push(next);
+
+        auto dir = next - current;
+        auto& nextCell = (*gridPtr)[next.x][next.y];
+        nextCell.setMazeParent(current);
+
+        auto& currentArray = topCell.getSubcells();
+        auto& nextArray = nextCell.getSubcells();
+
+        // Carve path depending on direction
+        if (dir == dirs[0]) { // North
+            nextArray[0][3].type = Path;
+            nextArray[1][3].type = Path;
+            nextArray[2][3].type = Path;
+            nextCell.changeColor();
+        }
+        else if (dir == dirs[1]) { // East
+            currentArray[3][0].type = Path;
+            currentArray[3][1].type = Path;
+            currentArray[3][2].type = Path;
+            topCell.changeColor();
+        }
+        else if (dir == dirs[2]) { // South
+            currentArray[0][3].type = Path;
+            currentArray[1][3].type = Path;
+            currentArray[2][3].type = Path;
+            topCell.changeColor();
+        }
+        else if (dir == dirs[3]) { // West
+            nextArray[3][0].type = Path;
+            nextArray[3][1].type = Path;
+            nextArray[3][2].type = Path;
+            nextCell.changeColor();
+        }
+    }
+    else {
+        Stack.pop();
+    }
+}
+
 
 MazeGenerator::~MazeGenerator()
 {
 	while (!Stack.empty())
 		Stack.pop();
-
-	
 }

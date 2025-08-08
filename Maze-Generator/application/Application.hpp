@@ -4,8 +4,11 @@
 #include "imgui-SFML.h"
 #include "SFML/Graphics.hpp"
 
-#include "Grid.hpp"
-#include "Recursive_backtracker.hpp"
+#include "../include/Grid.hpp"
+#include "../include/Recursive_backtracker.hpp"
+
+#include <thread>
+#include <mutex>
 
 class Application
 {

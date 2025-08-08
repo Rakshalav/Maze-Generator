@@ -1,6 +1,6 @@
-#include "../include/Application.hpp"
+#include "Application.hpp"
 
-Application::Application() : mazeGenerator(grid), event()
+Application::Application() : event()
 {
     window.create(sf::VideoMode(1800u, 1000u), "Maze Generator", sf::Style::Close);
     auto size_u = window.getSize();
@@ -23,8 +23,9 @@ void Application::eventHandler()
             window.close();
         }
 
-        if (event.key.code == sf::Keyboard::Space)
-            mazeGenerator.generateMaze();
+        if (event.key.code == sf::Keyboard::Space) {
+            mazeGenerator.init();
+        }
 
     }
 }
@@ -46,10 +47,22 @@ void Application::render()
 void Application::run()
 {
     sf::Clock deltaClock;
+    float mazeAccumulator = 0.f;
+    const float mazeUpdateRate = 10.f; // ms
+
     while (window.isOpen())
     {
         eventHandler();
-        ImGui::SFML::Update(window, deltaClock.restart());
+
+        auto frameTime = deltaClock.restart();
+        float dt = frameTime.asMilliseconds();
+        mazeAccumulator += dt;
+        if (mazeAccumulator >= mazeUpdateRate) {
+            mazeGenerator.update();
+            mazeAccumulator = 0.f;
+        }
+
+        ImGui::SFML::Update(window, frameTime);
         render();
     }
     ImGui::SFML::Shutdown();

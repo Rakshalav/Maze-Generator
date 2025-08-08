@@ -11,12 +11,11 @@ typedef std::array<std::array<Cell, ROW>, COL> cells;
 
 class Grid
 {
-private:
-	cells* grid = nullptr;
 
 public:
 	Grid();
+	static cells* grid;
+
 	void draw(sf::RenderWindow& window);
-	cells* getGrid() { return grid; }
 	~Grid();
 };
