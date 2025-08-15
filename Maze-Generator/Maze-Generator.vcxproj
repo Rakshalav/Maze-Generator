@@ -140,6 +140,7 @@
     <ClCompile Include="ImGui\imgui_draw.cpp" />
     <ClCompile Include="ImGui\imgui_tables.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Astar.cpp" />
     <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\Grid.cpp" />
     <ClCompile Include="src\Recursive_backtracker.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="include\Astar.hpp" />
     <ClInclude Include="include\Cell.hpp" />
     <ClInclude Include="include\Grid.hpp" />
     <ClInclude Include="include\Recursive_backtracker.hpp" />

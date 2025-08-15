@@ -5,10 +5,8 @@
 #include "SFML/Graphics.hpp"
 
 #include "../include/Grid.hpp"
+#include "../include/Astar.hpp"
 #include "../include/Recursive_backtracker.hpp"
-
-#include <thread>
-#include <mutex>
 
 class Application
 {
@@ -21,6 +19,7 @@ private:
 
 	Grid grid;
 	MazeGenerator mazeGenerator;
+	Astar aStar;
 
 public:
 	Application();

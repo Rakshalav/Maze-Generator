@@ -2,6 +2,8 @@
 
 using namespace std::chrono_literals;
 
+bool MazeGenerator::mazeDone = false;
+
 MazeGenerator::MazeGenerator()
 {
 	gridPtr = Grid::grid;
@@ -29,11 +31,28 @@ position MazeGenerator::random(std::vector<position> validDirs)
 void MazeGenerator::init()
 {
 	auto& startingCell = (*gridPtr)[0][0];
+    startingCell.setState(CellState::Start);
 	auto staringPos = startingCell.getPosition();
 	Stack.push(staringPos);
 	visited[staringPos.x][staringPos.y] = true;
 
 	generationStarted = true;
+}
+
+void MazeGenerator::generate()
+{
+    if (wantDelay)
+        return;
+
+    if (!generationStarted) {
+        mazeDone = true;
+        return;
+    }
+
+    while (!Stack.empty())
+    {
+        update();
+    }
 }
 
 void MazeGenerator::update()
@@ -135,8 +154,3 @@ void MazeGenerator::update()
 }
 
 
-MazeGenerator::~MazeGenerator()
-{
-	while (!Stack.empty())
-		Stack.pop();
-}

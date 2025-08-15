@@ -27,6 +27,9 @@ void Application::eventHandler()
             mazeGenerator.init();
         }
 
+        if (event.key.code == sf::Keyboard::Enter) {
+            aStar.init();
+        }
     }
 }
 
@@ -47,20 +50,34 @@ void Application::render()
 void Application::run()
 {
     sf::Clock deltaClock;
+
     float mazeAccumulator = 0.f;
     const float mazeUpdateRate = 10.f; // ms
+
+    float aStarAccumulator = 0.f;
+    const float aStarupdateRate = 10.f;
 
     while (window.isOpen())
     {
         eventHandler();
 
         auto frameTime = deltaClock.restart();
-        float dt = frameTime.asMilliseconds();
+        float dt = static_cast<float>(frameTime.asMilliseconds());
+
         mazeAccumulator += dt;
         if (mazeAccumulator >= mazeUpdateRate) {
             mazeGenerator.update();
             mazeAccumulator = 0.f;
         }
+
+        aStarAccumulator += dt;
+        if (aStarAccumulator >= aStarupdateRate) {
+            if (!aStar.foundDest)
+                aStar.update();
+            aStarAccumulator = 0.f;
+        }
+
+        mazeGenerator.generate();
 
         ImGui::SFML::Update(window, frameTime);
         render();

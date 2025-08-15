@@ -27,5 +27,4 @@ void Grid::draw(sf::RenderWindow& window)
 
 Grid::~Grid() {
 	delete[] grid;
-	grid = nullptr;
 }

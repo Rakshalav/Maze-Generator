@@ -12,8 +12,10 @@ class MazeGenerator
 private:
 
 	cells* gridPtr = nullptr;
-	bool mazeDone = false;
+
 	bool generationStarted = false;
+	bool wantDelay = true;
+
 	std::stack<position> Stack;
 	bool visited[COL][ROW];
 
@@ -25,8 +27,10 @@ private:
 
 public:
 	MazeGenerator();
-	~MazeGenerator();
+
+	static bool mazeDone;
 
 	void init();
 	void update();
+	void generate();
 };
