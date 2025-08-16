@@ -1,8 +1,7 @@
 #include "../include/Astar.hpp"
 
-Astar::Astar()
+Astar::Astar() : grid(Grid::grid)
 {
-    gridPtr = Grid::grid;
     memset(closedList, false, sizeof(closedList));
     foundDest = false;
 }
@@ -18,10 +17,10 @@ bool Astar::isUnblocked(position parent, position child)
 {
     position direction = child - parent;
 
-    auto& cellParent = (*gridPtr)[parent.x][parent.y];
+    auto& cellParent = grid[parent.x][parent.y];
     auto& subcellsParent = cellParent.getSubcells();
 
-    auto& cellChild = (*gridPtr)[child.x][child.y];
+    auto& cellChild = grid[child.x][child.y];
     auto& subcellChild = cellChild.getSubcells();
     
     if (direction == position(0, -1)) { //North
@@ -46,14 +45,14 @@ bool Astar::isUnblocked(position parent, position child)
 
 bool Astar::isDestination(position position)
 {
-	return (*gridPtr)[position.x][position.y].getState() == CellState::Target;
+	return grid[position.x][position.y].getState() == CellState::Target;
 }
 
 int Astar::calculateHval(position currentPos) 
 {
 	position goal(-1, -1);
 
-	for (auto& col : (*gridPtr)) {
+	for (auto& col : grid) {
 		for (auto& cell : col) {
 			if (cell.getState() == CellState::Target) {
 				goal = cell.getPosition();
@@ -73,7 +72,7 @@ void Astar::tracePath()
     bool foundTarget = false;
     position targetPos;
 
-    for (auto& col : (*gridPtr)) {
+    for (auto& col : grid) {
         for (auto& node : col) {
             if (node.getState() == CellState::Target) {
                 targetPos = node.getPosition();
@@ -87,7 +86,7 @@ void Astar::tracePath()
 
     position current = targetPos;
     while (true) {
-        auto& cell = (*gridPtr)[current.x][current.y];
+        auto& cell = grid[current.x][current.y];
 
         if (cell.getState() != CellState::Start && cell.getState() != CellState::Target) {
             cell.setState(CellState::Path);
@@ -103,7 +102,7 @@ void Astar::tracePath()
 
         position parent = cell.getParent();
         if (parent == position(-1, -1)) break;
-        if ((*gridPtr)[parent.x][parent.y].getState() == CellState::Start)
+        if (grid[parent.x][parent.y].getState() == CellState::Start)
             break;
 
         current = parent;
@@ -112,11 +111,12 @@ void Astar::tracePath()
 
 void Astar::init() 
 {
+
     if (foundDest)
         foundDest = false;
 
     Cell* startCell = nullptr;
-    for (auto& col : (*gridPtr)) {
+    for (auto& col : grid) {
         for (auto& cell : col) {
             auto state = cell.getState();
             if (state == CellState::Start) {
@@ -136,7 +136,7 @@ void Astar::init()
     openList.insert(Source);
 
     position targetCellpos(COL - 1, ROW - 1);
-    auto& Targetcell = (*gridPtr)[targetCellpos.x][targetCellpos.y];
+    auto& Targetcell = grid[targetCellpos.x][targetCellpos.y];
     Targetcell.setState(CellState::Target);
     auto& subcellstarget = Targetcell.getSubcells();
     subcellstarget[0][0].setFillColor(sf::Color::Red); subcellstarget[1][0].setFillColor(sf::Color::Red); subcellstarget[2][0].setFillColor(sf::Color::Red);
@@ -162,7 +162,10 @@ void Astar::pathFind()
 
 void Astar::update()
 {
-    if (!startAstar && openList.empty()) {
+    if (!startAstar)
+        return;
+
+    if (openList.empty()) {
         foundDest = true;
         return;
     }
@@ -183,7 +186,7 @@ void Astar::update()
 
     for (auto& direction : directions) {
         if (isValid(direction)) {
-            auto& cell = (*gridPtr)[direction.x][direction.y];
+            auto& cell = grid[direction.x][direction.y];
             if (isDestination(direction)) {
                 cell.setParent(pos);
                 tracePath();
@@ -191,7 +194,7 @@ void Astar::update()
                 return;
             }
             else if (!closedList[direction.x][direction.y] && isUnblocked(pos, direction)) {
-                gnew = (*gridPtr)[pos.x][pos.y].getGcost() + 1;
+                gnew = grid[pos.x][pos.y].getGcost() + 1;
                 hnew = calculateHval(direction);
                 fnew = gnew + hnew;
 
@@ -213,4 +216,9 @@ void Astar::update()
             }
         }
     }
+}
+
+Astar::~Astar()
+{
+    openList.clear();
 }

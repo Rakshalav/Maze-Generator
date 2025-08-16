@@ -13,13 +13,19 @@ class Application
 private:
 	sf::RenderWindow window;
 	sf::Vector2f window_size;
-	sf::RectangleShape displayArea;
+	sf::View view;
+
 	float Gui_margin;
 	sf::Event event;
+	sf::Clock deltaClock;
 
 	Grid grid;
 	MazeGenerator mazeGenerator;
 	Astar aStar;
+
+	bool dragging = false;
+	sf::Vector2f lastMousePos;
+	sf::Vector2f getMousePos();
 
 public:
 	Application();
@@ -27,5 +33,5 @@ public:
 	void run();
 	void render();
 	void renderImGui();
-	void eventHandler();
+	void eventHandler(float dt);
 };

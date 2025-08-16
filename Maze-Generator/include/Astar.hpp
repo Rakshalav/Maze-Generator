@@ -1,12 +1,12 @@
 #pragma once
 
+#include <utility>
+#include <iostream>
+#include <set>
+
 #include "Grid.hpp"
 #include "Cell.hpp"
 #include "Recursive_backtracker.hpp"
-
-#include <set>
-#include <utility>
-#include <iostream>
 
 typedef std::pair<int, sf::Vector2i> Pair;
 
@@ -29,7 +29,7 @@ struct Compare {
 class Astar
 {
 private:
-	cells* gridPtr = nullptr;
+	cells& grid;
 	std::set<Pair, Compare> openList;
 	bool closedList[COL][ROW];
 
@@ -45,9 +45,12 @@ private:
 
 public:
 	Astar();
+
 	bool foundDest;
 	void init();
 	void tracePath();
 	void pathFind();
 	void update();
+
+	~Astar();
 };

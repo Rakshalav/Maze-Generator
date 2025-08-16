@@ -1,12 +1,9 @@
 #include "../include/Recursive_backtracker.hpp"
 
-using namespace std::chrono_literals;
-
 bool MazeGenerator::mazeDone = false;
 
-MazeGenerator::MazeGenerator()
+MazeGenerator::MazeGenerator() : grid(Grid::grid)
 {
-	gridPtr = Grid::grid;
 	memset(visited, false, sizeof(visited));
 }
 
@@ -30,7 +27,7 @@ position MazeGenerator::random(std::vector<position> validDirs)
 
 void MazeGenerator::init()
 {
-	auto& startingCell = (*gridPtr)[0][0];
+	auto& startingCell = grid[0][0];
     startingCell.setState(CellState::Start);
 	auto staringPos = startingCell.getPosition();
 	Stack.push(staringPos);
@@ -63,7 +60,7 @@ void MazeGenerator::update()
     }
 
     if (previousTop != position(-1, -1)) {
-        auto& prevCell = (*gridPtr)[previousTop.x][previousTop.y];
+        auto& prevCell = grid[previousTop.x][previousTop.y];
         auto& prevSubCells = prevCell.getSubcells();
 
         prevSubCells[0][0].setFillColor(sf::Color::White); prevSubCells[1][0].setFillColor(sf::Color::White); prevSubCells[2][0].setFillColor(sf::Color::White);
@@ -82,7 +79,7 @@ void MazeGenerator::update()
     visited[current.x][current.y] = true;
 
     // Mark current top cell green
-    auto& topCell = (*gridPtr)[current.x][current.y];
+    auto& topCell = grid[current.x][current.y];
     auto& topSubCell = topCell.getSubcells();
 
     topSubCell[0][0].setFillColor(sf::Color::Green); topSubCell[1][0].setFillColor(sf::Color::Green); topSubCell[2][0].setFillColor(sf::Color::Green);
@@ -116,7 +113,7 @@ void MazeGenerator::update()
         Stack.push(next);
 
         auto dir = next - current;
-        auto& nextCell = (*gridPtr)[next.x][next.y];
+        auto& nextCell = grid[next.x][next.y];
         nextCell.setMazeParent(current);
 
         auto& currentArray = topCell.getSubcells();
@@ -154,3 +151,8 @@ void MazeGenerator::update()
 }
 
 
+MazeGenerator::~MazeGenerator()
+{
+    std::stack<position> emptyStk;
+    Stack.swap(emptyStk);
+}

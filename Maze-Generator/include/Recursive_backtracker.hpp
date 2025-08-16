@@ -3,15 +3,12 @@
 #include <stack>
 #include "Grid.hpp"
 #include <random>
-#include <ranges>
-#include <thread>
-#include <chrono>
 
 class MazeGenerator
 {
 private:
 
-	cells* gridPtr = nullptr;
+	cells& grid;
 
 	bool generationStarted = false;
 	bool wantDelay = true;
@@ -33,4 +30,6 @@ public:
 	void init();
 	void update();
 	void generate();
+
+	~MazeGenerator();
 };
