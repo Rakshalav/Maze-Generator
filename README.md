@@ -38,9 +38,7 @@ It supports maze generation with the **Recursive Backtracker** algorithm and pat
 
 1. Download the source code.
 2. Open the `Maze-Generator.sln`.
-3. In the solution click on `Project` -> `Properties` or press `Alt + F7`.
-4. Go to `C/C++` -> `General` -> `Additional Include Directories` and change the path of the libraries accordingly.
-5. Repeat step **4** for `Linker` -> `Input` -> `Additional Library Directories`.
+3. And simply build the project.
 
 ---
 
