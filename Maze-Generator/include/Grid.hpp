@@ -5,8 +5,8 @@
 #include <array>
 #include <vector>
 
-constexpr int COL = 100;
-constexpr int ROW = 50;
+constexpr int COL = 90;
+constexpr int ROW = 45;
 
 typedef std::vector<std::vector<Cell>> cells;
 
