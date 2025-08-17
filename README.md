@@ -42,6 +42,19 @@ It supports maze generation with the **Recursive Backtracker** algorithm and pat
 
 ---
 
+## Demonstration
+
+### Grid Movement
+![grid_movement](https://github.com/user-attachments/assets/611a5dd8-06b7-48c8-8eea-685253d8ca73)
+
+### Maze Generation
+![maze_generator](https://github.com/user-attachments/assets/e9c873bd-47a7-4aa9-b1ae-7e74e516acc1)
+
+### Path Finding
+![Pathfinding](https://github.com/user-attachments/assets/8d1354ee-6e3c-4657-aaf2-bb9d5336ced0)
+
+---
+
 ## Project Structure
 **Maze-Generator/**
 
